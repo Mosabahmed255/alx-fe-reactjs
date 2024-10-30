@@ -10,7 +10,7 @@ function App() {
       <div>
         <Header />
         <MainContent />
-        <WelcomeMessage />
+        <WelcomeMessage/>
       </div>
       <Footer />
     </>
