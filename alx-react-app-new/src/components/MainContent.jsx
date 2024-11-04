@@ -5,6 +5,7 @@ function MainContent() {
                 <p>This is a simple JSX component.</p>
                 <p>I am learning about JSX!</p>
                 <p>I love to learn New things.</p>
+                <p>I love to visit New York, Paris, and Tokyo.</p>
             </main>
     );
 };

@@ -10,11 +10,11 @@ function App() {
       <div>
         <Header />
         <MainContent />
-        <UserProfile name="Mosab" age="21" bio="Loves programming" />
+        <UserProfile name="Alice" age="25" bio="Loves hiking and photography" />
       </div>
       <Footer />
     </>
-  )
-}
+  );
+};
 
 export default App;
