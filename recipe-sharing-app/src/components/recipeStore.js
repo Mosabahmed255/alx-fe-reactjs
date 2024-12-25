@@ -1,19 +1,25 @@
-import create from "zustand";
+import create from 'zustand';
 
 const useRecipeStore = create((set) => ({
-    recipes: [], // Initial recipes array
-    addRecipe: (newRecipe) =>
-    set((state) => ({ recipes: [...state.recipes, newRecipe] })),
-    deleteRecipe: (recipeId) =>
+  recipes: [],
+  searchTerm: '',
+  ingredientFilter: '',
+  cookingTimeFilter: null,
+  setIngredientFilter: (ingredient) => set({ ingredientFilter: ingredient }),
+  setCookingTimeFilter: (time) => set({ cookingTimeFilter: time }),
+  filteredRecipes: [],
+  filterRecipes: () =>
     set((state) => ({
-        recipes: state.recipes.filter((recipe) => recipe.id !== recipeId),
-    })),
-    updateRecipe: (updatedRecipe) =>
-    set((state) => ({
-        recipes: state.recipes.map((recipe) =>
-        recipe.id === updatedRecipe.id ? updatedRecipe : recipe
-        ),
+      filteredRecipes: state.recipes.filter((recipe) => {
+        const matchesTitle = recipe.title.toLowerCase().includes(state.searchTerm.toLowerCase());
+        const matchesIngredient =
+          !state.ingredientFilter || recipe.ingredients.includes(state.ingredientFilter);
+        const matchesCookingTime =
+          !state.cookingTimeFilter || recipe.cookingTime <= state.cookingTimeFilter;
+        return matchesTitle && matchesIngredient && matchesCookingTime;
+      }),
     })),
 }));
+
 
 export default useRecipeStore;
