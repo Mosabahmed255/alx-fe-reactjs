@@ -4,7 +4,8 @@ import RecipeList from './RecipeList';
 import AddRecipeForm from './AddRecipeForm';
 import RecipeDetails from './RecipeDetails';
 import SearchBar from './SearchBar';
-import './App.css';
+import FavoritesList from './FavoritesList';
+import RecommendationsList from './RecommendationsList';
 
 const App = () => {
   return (
@@ -16,6 +17,8 @@ const App = () => {
           <Route path="/" element={<RecipeList />} />
           <Route path="/add-recipe" element={<AddRecipeForm />} />
           <Route path="/recipes/:id" element={<RecipeDetails />} />
+          <Route path="/favorites" element={<FavoritesList />} />
+          <Route path="/recommendations" element={<RecommendationsList />} />
         </Routes>
       </div>
     </Router>

@@ -1,42 +1,32 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.favorites, .recommendations {
+  margin: 20px auto;
+  padding: 15px;
+  max-width: 800px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.favorites h2, .recommendations h2 {
+  color: #333;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.favorites div, .recommendations div {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.favorites div:last-child, .recommendations div:last-child {
+  border-bottom: none;
 }
 
-.card {
-  padding: 2em;
+.favorites h3, .recommendations h3 {
+  color: #555;
 }
 
-.read-the-docs {
-  color: #888;
+.favorites p, .recommendations p {
+  color: #777;
+  font-size: 0.9rem;
 }
