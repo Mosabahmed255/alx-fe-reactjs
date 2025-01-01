@@ -1,22 +1,40 @@
 import React, { useState } from 'react';
 
 const RegistrationForm = () => {
-  // State management for form fields
+  // State for form fields
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    
+  // State for managing errors
+    const [errors, setErrors] = useState({});
 
   // Handle form submission
     const handleSubmit = (e) => {
     e.preventDefault();
-    // Basic validation
-    if (!username || !email || !password) {
-        setError('All fields are required');
+
+    const newErrors = {};
+
+    // Field validations
+    if (!username) {
+        newErrors.username = 'Username is required';
+    }
+    if (!email) {
+        newErrors.email = 'Email is required';
+    }
+    if (!password) {
+        newErrors.password = 'Password is required';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
         return;
     }
-    setError('');
+
+    // Reset errors if validation passes
+    setErrors({});
     console.log('User registered:', { username, email, password });
+
     // Reset form fields
     setUsername('');
     setEmail('');
@@ -26,7 +44,6 @@ const RegistrationForm = () => {
     return (
     <form onSubmit={handleSubmit}>
         <h2>Register</h2>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
         <div>
         <label>Username:</label>
         <input
@@ -34,6 +51,7 @@ const RegistrationForm = () => {
             value={username}
             onChange={(e) => setUsername(e.target.value)}
         />
+        {errors.username && <p style={{ color: 'red' }}>{errors.username}</p>}
         </div>
         <div>
         <label>Email:</label>
@@ -42,6 +60,7 @@ const RegistrationForm = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
         />
+        {errors.email && <p style={{ color: 'red' }}>{errors.email}</p>}
         </div>
         <div>
         <label>Password:</label>
@@ -50,6 +69,7 @@ const RegistrationForm = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
         />
+        {errors.password && <p style={{ color: 'red' }}>{errors.password}</p>}
         </div>
         <button type="submit">Register</button>
     </form>
@@ -57,4 +77,3 @@ const RegistrationForm = () => {
 };
 
 export default RegistrationForm;
-
