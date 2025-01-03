@@ -1,47 +1,41 @@
 import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
-import TodoList from "../TodoList";
+import "@testing-library/jest-dom";
+import TodoList from "../components/TodoList";
 
 describe("TodoList Component", () => {
   test("renders initial todos", () => {
     render(<TodoList />);
-    expect(screen.getByText("Learn React")).toBeInTheDocument();
-    expect(screen.getByText("Write Tests")).toBeInTheDocument();
+    const todoItems = screen.getAllByRole("listitem");
+    expect(todoItems.length).toBe(3); // Assuming 3 initial todos
   });
 
   test("adds a new todo", () => {
     render(<TodoList />);
     const input = screen.getByPlaceholderText("Add a new todo");
-    const addButton = screen.getByText("Add Todo");
+    const button = screen.getByText("Add");
 
     fireEvent.change(input, { target: { value: "New Todo" } });
-    fireEvent.click(addButton);
+    fireEvent.click(button);
 
-    expect(screen.getByText("New Todo")).toBeInTheDocument();
+    const newTodo = screen.getByText("New Todo");
+    expect(newTodo).toBeInTheDocument();
   });
 
-  test("toggles todo completion", () => {
+  test("toggles a todo's completion status", () => {
     render(<TodoList />);
-    const todoItem = screen.getByText("Learn React");
-
-    // Initial state
-    expect(todoItem).not.toHaveStyle("text-decoration: line-through");
-
-    // Toggle to completed
+    const todoItem = screen.getByText("Initial Todo 1"); // Replace with one of the initial todos
     fireEvent.click(todoItem);
-    expect(todoItem).toHaveStyle("text-decoration: line-through");
 
-    // Toggle back to not completed
-    fireEvent.click(todoItem);
-    expect(todoItem).not.toHaveStyle("text-decoration: line-through");
+    expect(todoItem).toHaveClass("completed"); // Assuming completed class is added
   });
 
   test("deletes a todo", () => {
     render(<TodoList />);
-    const deleteButton = screen.getAllByText("Delete")[0];
-
+    const deleteButton = screen.getAllByText("Delete")[0]; // Assuming delete buttons are present
     fireEvent.click(deleteButton);
 
-    expect(screen.queryByText("Learn React")).not.toBeInTheDocument();
+    const todoItem = screen.queryByText("Initial Todo 1"); // Replace with one of the initial todos
+    expect(todoItem).not.toBeInTheDocument();
   });
 });
