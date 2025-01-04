@@ -19,15 +19,10 @@ const AddRecipeForm = () => {
     const handleSubmit = (event) => {
     event.preventDefault();
 
-    // Simple validation logic
     const newErrors = {};
     if (!formData.title.trim()) newErrors.title = "Title is required.";
-    if (!formData.ingredients.trim())
-        newErrors.ingredients = "Ingredients are required.";
-    else if (formData.ingredients.split("\n").length < 2)
-        newErrors.ingredients = "Include at least two ingredients.";
-    if (!formData.steps.trim())
-        newErrors.steps = "Preparation steps are required.";
+    if (!formData.ingredients.trim()) newErrors.ingredients = "Ingredients are required.";
+    if (!formData.steps.trim()) newErrors.steps = "Preparation steps are required.";
 
     if (Object.keys(newErrors).length > 0) {
         setErrors(newErrors);
@@ -60,10 +55,7 @@ const AddRecipeForm = () => {
             {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
         </div>
         <div>
-            <label
-            htmlFor="ingredients"
-            className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="ingredients" className="block text-sm font-medium text-gray-700">
             Ingredients (each on a new line)
             </label>
             <textarea
@@ -76,15 +68,10 @@ const AddRecipeForm = () => {
                 errors.ingredients ? "border-red-500" : "border-gray-300"
             }`}
             ></textarea>
-            {errors.ingredients && (
-            <p className="text-red-500 text-sm mt-1">{errors.ingredients}</p>
-            )}
+            {errors.ingredients && <p className="text-red-500 text-sm mt-1">{errors.ingredients}</p>}
         </div>
         <div>
-            <label
-            htmlFor="steps"
-            className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="steps" className="block text-sm font-medium text-gray-700">
             Preparation Steps
             </label>
             <textarea
@@ -97,9 +84,7 @@ const AddRecipeForm = () => {
                 errors.steps ? "border-red-500" : "border-gray-300"
             }`}
             ></textarea>
-            {errors.steps && (
-            <p className="text-red-500 text-sm mt-1">{errors.steps}</p>
-            )}
+            {errors.steps && <p className="text-red-500 text-sm mt-1">{errors.steps}</p>}
         </div>
         <button
             type="submit"
