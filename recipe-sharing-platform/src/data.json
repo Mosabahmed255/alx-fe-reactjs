@@ -11,7 +11,13 @@
         "100g pancetta",
         "Salt and pepper to taste"
     ],
-    "steps": "Boil the pasta. Cook pancetta until crisp. Beat eggs with cheese, then mix with pasta and pancetta."
+    "instructions": [
+        "Boil the pasta in salted water until al dente.",
+        "Cook the pancetta until crispy.",
+        "Whisk together eggs and cheese in a bowl.",
+        "Drain the pasta and mix with pancetta.",
+        "Stir in the egg mixture off heat and season with pepper."
+    ]
     },
     {
     "id": 2,
@@ -25,6 +31,12 @@
         "1 cup tomato puree",
         "1/2 cup heavy cream"
     ],
-    "steps": "Marinate chicken in yogurt and spices. Grill chicken until cooked. Simmer tomato puree with cream and add chicken."
+    "instructions": [
+        "Marinate chicken in yogurt and spices for 1 hour.",
+        "Grill the chicken until cooked through.",
+        "Simmer tomato puree in a pan with spices.",
+        "Add grilled chicken and cook for 10 minutes.",
+        "Stir in cream and serve with rice or naan."
+    ]
     }
 ]
