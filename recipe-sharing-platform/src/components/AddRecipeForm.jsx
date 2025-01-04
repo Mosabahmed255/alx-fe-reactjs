@@ -9,7 +9,7 @@ const AddRecipeForm = () => {
     const [errors, setErrors] = useState({});
 
     const handleChange = (event) => {
-    const value = event.target.value; // Explicitly using `target.value`
+    const value = event.target.value;
     const name = event.target.name;
     setFormData((prevData) => ({
         ...prevData,
@@ -17,16 +17,20 @@ const AddRecipeForm = () => {
     }));
     };
 
-    const handleSubmit = (event) => {
-    event.preventDefault();
-
+    const validate = () => {
     const newErrors = {};
     if (!formData.title.trim()) newErrors.title = "Title is required.";
     if (!formData.ingredients.trim()) newErrors.ingredients = "Ingredients are required.";
     if (!formData.steps.trim()) newErrors.steps = "Preparation steps are required.";
+    return newErrors;
+    };
 
-    if (Object.keys(newErrors).length > 0) {
-        setErrors(newErrors);
+    const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const validationErrors = validate(); // Explicit use of "validate"
+    if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
         return;
     }
 
