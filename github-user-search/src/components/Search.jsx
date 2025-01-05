@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { fetchUserData } from "../services/githubService";
+import { fetchAdvancedSearchData } from "../services/githubService";
 
 const Search = () => {
     const [username, setUsername] = useState("");
-    const [userData, setUserData] = useState(null);
+    const [location, setLocation] = useState("");
+    const [minRepos, setMinRepos] = useState("");
+    const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
 
@@ -11,27 +13,49 @@ const Search = () => {
     e.preventDefault();
     setLoading(true);
     setError("");
-    setUserData(null);
+    setResults([]);
+
+    const query = [
+        username && `user:${username}`,
+        location && `location:${location}`,
+        minRepos && `repos:>${minRepos}`,
+    ]
+        .filter(Boolean)
+        .join(" ");
 
     try {
-        const data = await fetchUserData(username);
-        setUserData(data);
+        const data = await fetchAdvancedSearchData(query);
+        setResults(data.items);
     } catch (err) {
-        setError("Looks like we cant find the user.");
+        setError("Something went wrong. Please try again.");
     } finally {
         setLoading(false);
     }
     };
 
     return (
-    <div className="p-6 max-w-md mx-auto">
-        <form onSubmit={handleSubmit} className="flex gap-2 mb-4">
+    <div className="p-6 max-w-2xl mx-auto">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
             type="text"
-            placeholder="Enter GitHub username"
+            placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full p-2 border rounded-md"
+            className="p-2 border rounded-md"
+        />
+        <input
+            type="text"
+            placeholder="Location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="p-2 border rounded-md"
+        />
+        <input
+            type="number"
+            placeholder="Minimum Repositories"
+            value={minRepos}
+            onChange={(e) => setMinRepos(e.target.value)}
+            className="p-2 border rounded-md"
         />
         <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md">
             Search
@@ -40,26 +64,28 @@ const Search = () => {
 
         {loading && <p>Loading...</p>}
         {error && <p className="text-red-500">{error}</p>}
-        {userData && (
-        <div className="border p-4 rounded-md shadow-md">
+        <div className="mt-6">
+        {results.map((user) => (
+            <div key={user.id} className="p-4 border rounded-md mb-4 shadow-md">
             <img
-            src={userData.avatar_url}
-            alt={userData.login}
-            className="w-24 h-24 rounded-full mx-auto"
+                src={user.avatar_url}
+                alt={user.login}
+                className="w-16 h-16 rounded-full"
             />
-            <h2 className="text-xl text-center mt-2">{userData.name || "No Name"}</h2>
-            <p className="text-center">
+            <h3 className="text-lg font-bold">{user.login}</h3>
+            <p>Location: {user.location || "Not available"}</p>
+            <p>Repositories: {user.public_repos || "Unknown"}</p>
             <a
-                href={userData.html_url}
+                href={user.html_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-500 underline"
             >
-                Visit GitHub Profile
+                View Profile
             </a>
-            </p>
+            </div>
+        ))}
         </div>
-        )}
     </div>
     );
 };
