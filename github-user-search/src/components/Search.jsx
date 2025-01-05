@@ -1,90 +1,106 @@
 import React, { useState } from "react";
-import { fetchAdvancedSearchData } from "../services/githubService";
+import { fetchUsers } from "../services/githubService";
 
 const Search = () => {
     const [username, setUsername] = useState("");
     const [location, setLocation] = useState("");
     const [minRepos, setMinRepos] = useState("");
-    const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [results, setResults] = useState([]);
 
-    const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Function to handle the API call
+    const fetchUserData = async () => {
     setLoading(true);
     setError("");
     setResults([]);
 
-    const query = [
-        username && `user:${username}`,
-        location && `location:${location}`,
-        minRepos && `repos:>${minRepos}`,
-    ]
-        .filter(Boolean)
-        .join(" ");
-
     try {
-        const data = await fetchAdvancedSearchData(query);
+        const data = await fetchUsers(username, location, minRepos);
+        if (data.items && data.items.length > 0) {
         setResults(data.items);
+        } else {
+        setError("Looks like we can't find the user");
+        }
     } catch (err) {
-        setError("Something went wrong. Please try again.");
+        setError("Looks like we can't find the user");
     } finally {
         setLoading(false);
     }
     };
 
+    const handleSubmit = (e) => {
+    e.preventDefault();
+    fetchUserData();
+    };
+
     return (
-    <div className="p-6 max-w-2xl mx-auto">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
+    <div className="max-w-xl mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">GitHub User Search</h1>
+        <form className="space-y-4" onSubmit={handleSubmit}>
+        <div>
+            <label className="block text-sm font-medium">Username</label>
+            <input
             type="text"
-            placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="p-2 border rounded-md"
-        />
-        <input
+            className="w-full p-2 border border-gray-300 rounded"
+            placeholder="Enter GitHub username"
+            />
+        </div>
+        <div>
+            <label className="block text-sm font-medium">Location</label>
+            <input
             type="text"
-            placeholder="Location"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            className="p-2 border rounded-md"
-        />
-        <input
+            className="w-full p-2 border border-gray-300 rounded"
+            placeholder="Enter location"
+            />
+        </div>
+        <div>
+            <label className="block text-sm font-medium">Minimum Repositories</label>
+            <input
             type="number"
-            placeholder="Minimum Repositories"
             value={minRepos}
             onChange={(e) => setMinRepos(e.target.value)}
-            className="p-2 border rounded-md"
-        />
-        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded-md">
+            className="w-full p-2 border border-gray-300 rounded"
+            placeholder="Enter minimum repositories"
+            />
+        </div>
+        <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
+        >
             Search
         </button>
         </form>
 
+        <div className="mt-6">
         {loading && <p>Loading...</p>}
         {error && <p className="text-red-500">{error}</p>}
-        <div className="mt-6">
-        {results.map((user) => (
-            <div key={user.id} className="p-4 border rounded-md mb-4 shadow-md">
-            <img
-                src={user.avatar_url}
-                alt={user.login}
-                className="w-16 h-16 rounded-full"
-            />
-            <h3 className="text-lg font-bold">{user.login}</h3>
-            <p>Location: {user.location || "Not available"}</p>
-            <p>Repositories: {user.public_repos || "Unknown"}</p>
-            <a
-                href={user.html_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 underline"
-            >
-                View Profile
-            </a>
-            </div>
-        ))}
+        {results.length > 0 && (
+            <ul className="space-y-4">
+            {results.map((user) => (
+                <li key={user.id} className="border p-4 rounded">
+                <img
+                    src={user.avatar_url}
+                    alt={user.login}
+                    className="w-16 h-16 rounded-full mb-2"
+                />
+                <h2 className="text-lg font-bold">{user.login}</h2>
+                <a
+                    href={user.html_url}
+                    className="text-blue-500"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    View Profile
+                </a>
+                </li>
+            ))}
+            </ul>
+        )}
         </div>
     </div>
     );
